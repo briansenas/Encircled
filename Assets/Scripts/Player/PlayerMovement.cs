@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 	#region Variables
 	//Components
     public Rigidbody2D RB { get; private set; }
+	private TrailRenderer _trailRenderer; 
 
 	//Variables control the various actions the player can perform at any time.
 	//These are fields which can are public allowing for other sctipts to read them
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
 	public bool IsJumping { get; private set; }
 	public bool IsWallJumping { get; private set; }
 	public bool IsSliding { get; private set; }
+	public bool IsDashing { get; private set; }
 
 	//Timers (also all fields, could be private and a method returning a bool could be used)
 	public float LastOnGroundTime { get; private set; }
@@ -42,12 +44,19 @@ public class PlayerMovement : MonoBehaviour
 	private bool _isJumpCut;
 	private bool _isJumpFalling;
 
+	//Dash
+	private int _dashesLeft;
+	private bool _dashRefilling;
+	private Vector2 _lastDashDir;
+	private bool _isDashAttacking;
+
 	//Wall Jump
 	private float _wallJumpStartTime;
 	private int _lastWallJumpDir;
 
 	private Vector2 _moveInput;
 	public float LastPressedJumpTime { get; private set; }
+	public float LastPressedDashTime { get; private set; }
 
 	//Set all of these up in the inspector
 	[Header("Checks")] 
@@ -66,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
 	{
 		RB = GetComponent<Rigidbody2D>();
+		_trailRenderer = GetComponent<TrailRenderer>(); 
 	}
 
 	private void Start()
@@ -87,6 +97,12 @@ public class PlayerMovement : MonoBehaviour
 		}
 	} 
 
+	public void onDash(InputAction.CallbackContext context){ 
+		if(context.started){
+			OnDashInput(); 
+		}
+	}
+
 	private void Update()
 	{
         #region TIMERS
@@ -96,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
 		LastOnWallLeftTime -= Time.deltaTime;
 
 		LastPressedJumpTime -= Time.deltaTime;
+		LastPressedDashTime -= Time.deltaTime;
 		#endregion
 
 		#region INPUT HANDLER
@@ -104,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
 		#endregion
 
 		#region COLLISION CHECKS
-		if (!IsJumping)
+		if (!IsDashing && !IsJumping)
 		{
 			//Ground Check
 			if (Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer) && !IsJumping) //checks if set box overlaps with ground
@@ -149,28 +166,47 @@ public class PlayerMovement : MonoBehaviour
 				_isJumpFalling = false;
 		}
 
-		//Jump
-		if (CanJump() && LastPressedJumpTime > 0)
-		{
-			IsJumping = true;
-			IsWallJumping = false;
-			_isJumpCut = false;
-			_isJumpFalling = false;
-			Jump();
-		}
-		//WALL JUMP
-		else if (CanWallJump() && LastPressedJumpTime > 0)
-		{
-			IsWallJumping = true;
-			IsJumping = false;
-			_isJumpCut = false;
-			_isJumpFalling = false;
-			_wallJumpStartTime = Time.time;
-			_lastWallJumpDir = (LastOnWallRightTime > 0) ? -1 : 1;
-			
-			WallJump(_lastWallJumpDir);
+			if(!IsDashing){ 
+
+			//Jump
+			if (CanJump() && LastPressedJumpTime > 0)
+			{
+				IsJumping = true;
+				IsWallJumping = false;
+				_isJumpCut = false;
+				_isJumpFalling = false;
+				Jump();
+			}
+			//WALL JUMP
+			else if (CanWallJump() && LastPressedJumpTime > 0)
+			{
+				IsWallJumping = true;
+				IsJumping = false;
+				_isJumpCut = false;
+				_isJumpFalling = false;
+				_wallJumpStartTime = Time.time;
+				_lastWallJumpDir = (LastOnWallRightTime > 0) ? -1 : 1;
+				
+				WallJump(_lastWallJumpDir);
+			}
 		}
 		#endregion
+
+		#region DASH CHECKS 
+		if(CanDash() && LastPressedDashTime > 0){
+			if(_moveInput != Vector2.zero)
+				_lastDashDir = _moveInput; 
+			else 
+				_lastDashDir = IsFacingRight ? Vector2.right : Vector2.left; 
+
+			IsDashing = true; 
+			IsJumping = true; 
+			IsWallJumping = true; 
+			_isJumpCut = false; 
+
+			StartCoroutine(nameof(StartDash), _lastDashDir); 
+		}
+		#endregion 
 
 		#region SLIDE CHECKS
 		if (CanSlide() && ((LastOnWallLeftTime > 0 && _moveInput.x < 0) || (LastOnWallRightTime > 0 && _moveInput.x > 0)))
@@ -180,50 +216,57 @@ public class PlayerMovement : MonoBehaviour
 		#endregion
 
 		#region GRAVITY
-		//Higher gravity if we've released the jump input or are falling
-		if (IsSliding)
+		if(!_isDashAttacking)
 		{
-			SetGravityScale(0);
-		}
-		else if (RB.velocity.y < 0 && _moveInput.y < 0)
-		{
-			//Much higher gravity if holding down
-			SetGravityScale(Data.gravityScale * Data.fastFallGravityMult);
-			//Caps maximum fall speed, so when falling over large distances we don't accelerate to insanely high speeds
-			RB.velocity = new Vector2(RB.velocity.x, Mathf.Max(RB.velocity.y, -Data.maxFastFallSpeed));
-		}
-		else if (_isJumpCut)
-		{
-			//Higher gravity if jump button released
-			SetGravityScale(Data.gravityScale * Data.jumpCutGravityMult);
-			RB.velocity = new Vector2(RB.velocity.x, Mathf.Max(RB.velocity.y, -Data.maxFallSpeed));
-		}
-		else if ((IsJumping || IsWallJumping || _isJumpFalling) && Mathf.Abs(RB.velocity.y) < Data.jumpHangTimeThreshold)
-		{
-			SetGravityScale(Data.gravityScale * Data.jumpHangGravityMult);
-		}
-		else if (RB.velocity.y < 0)
-		{
-			//Higher gravity if falling
-			SetGravityScale(Data.gravityScale * Data.fallGravityMult);
-			//Caps maximum fall speed, so when falling over large distances we don't accelerate to insanely high speeds
-			RB.velocity = new Vector2(RB.velocity.x, Mathf.Max(RB.velocity.y, -Data.maxFallSpeed));
-		}
-		else
-		{
-			//Default gravity if standing on a platform or moving upwards
-			SetGravityScale(Data.gravityScale);
+			//Higher gravity if we've released the jump input or are falling
+			if (IsSliding)
+			{
+				SetGravityScale(0);
+			}
+			else if (RB.velocity.y < 0 && _moveInput.y < 0)
+			{
+				//Much higher gravity if holding down
+				SetGravityScale(Data.gravityScale * Data.fastFallGravityMult);
+				//Caps maximum fall speed, so when falling over large distances we don't accelerate to insanely high speeds
+				RB.velocity = new Vector2(RB.velocity.x, Mathf.Max(RB.velocity.y, -Data.maxFastFallSpeed));
+			}
+			else if (_isJumpCut)
+			{
+				//Higher gravity if jump button released
+				SetGravityScale(Data.gravityScale * Data.jumpCutGravityMult);
+				RB.velocity = new Vector2(RB.velocity.x, Mathf.Max(RB.velocity.y, -Data.maxFallSpeed));
+			}
+			else if ((IsJumping || IsWallJumping || _isJumpFalling) && Mathf.Abs(RB.velocity.y) < Data.jumpHangTimeThreshold)
+			{
+				SetGravityScale(Data.gravityScale * Data.jumpHangGravityMult);
+			}
+			else if (RB.velocity.y < 0)
+			{
+				//Higher gravity if falling
+				SetGravityScale(Data.gravityScale * Data.fallGravityMult);
+				//Caps maximum fall speed, so when falling over large distances we don't accelerate to insanely high speeds
+				RB.velocity = new Vector2(RB.velocity.x, Mathf.Max(RB.velocity.y, -Data.maxFallSpeed));
+			}
+			else
+			{
+				//Default gravity if standing on a platform or moving upwards
+				SetGravityScale(Data.gravityScale);
+			}
 		}
 		#endregion
     }
 
     private void FixedUpdate()
 	{
-		//Handle Run
-		if (IsWallJumping)
-			Run(Data.wallJumpRunLerp);
-		else
-			Run(1);
+		if(!IsDashing){
+			//Handle Run
+			if (IsWallJumping)
+				Run(Data.wallJumpRunLerp);
+			else
+				Run(1);
+		}else if(_isDashAttacking){
+			Run(Data.dashEndRunLerp); 
+		}
 
 		//Handle Slide
 		if (IsSliding)
@@ -242,12 +285,30 @@ public class PlayerMovement : MonoBehaviour
 		if (CanJumpCut() || CanWallJumpCut())
 			_isJumpCut = true;
 	}
+	public void OnDashInput()
+	{
+		LastPressedDashTime = Data.dashInputBufferTime;
+	}
     #endregion
 
     #region GENERAL METHODS
     public void SetGravityScale(float scale)
 	{
 		RB.gravityScale = scale;
+	}
+	private void Sleep(float duration)
+    {
+		//Method used so we don't need to call StartCoroutine everywhere
+		//nameof() notation means we don't need to input a string directly.
+		//Removes chance of spelling mistakes and will improve error messages if any
+		StartCoroutine(nameof(PerformSleep), duration);
+    }
+
+	private IEnumerator PerformSleep(float duration)
+    {
+		Time.timeScale = 0;
+		yield return new WaitForSecondsRealtime(duration); //Must be Realtime since timeScale with be 0 
+		Time.timeScale = 1;
 	}
     #endregion
 
@@ -361,6 +422,62 @@ public class PlayerMovement : MonoBehaviour
 	}
 	#endregion
 
+	#region DASH 
+	//Dash Coroutine
+	private IEnumerator StartDash(Vector2 dir)
+	{
+		//Overall this method of dashing aims to mimic Celeste, if you're looking for
+		// a more physics-based approach try a method similar to that used in the jump
+
+		LastOnGroundTime = 0;
+		LastPressedDashTime = 0;
+
+		float startTime = Time.time;
+
+		_dashesLeft--;
+		_isDashAttacking = true;
+
+		SetGravityScale(0);
+
+		//We keep the player's velocity at the dash speed during the "attack" phase (in celeste the first 0.15s)
+		while (Time.time - startTime <= Data.dashAttackTime)
+		{
+			RB.velocity = dir.normalized * Data.dashSpeed;
+			//Pauses the loop until the next frame, creating something of a Update loop. 
+			//This is a cleaner implementation opposed to multiple timers and this coroutine approach is actually what is used in Celeste :D
+			yield return null;
+		}
+
+		startTime = Time.time;
+
+		_isDashAttacking = false;
+
+		//Begins the "end" of our dash where we return some control to the player but still limit run acceleration (see Update() and Run())
+		SetGravityScale(Data.gravityScale);
+		RB.velocity = Data.dashEndSpeed * dir.normalized;
+
+		while (Time.time - startTime <= Data.dashEndTime)
+		{
+			yield return null;
+		}
+
+		//Dash over
+		IsDashing = false;
+		// Fix Bug for in-ground dash
+		IsJumping = false; 
+	}
+
+	//Short period before the player is able to dash again
+	private IEnumerator RefillDash(int amount)
+	{
+		//SHoet cooldown, so we can't constantly dash along the ground, again this is the implementation in Celeste, feel free to change it up
+		_dashRefilling = true;
+		yield return new WaitForSeconds(Data.dashRefillTime);
+		_dashRefilling = false;
+		_dashesLeft = Mathf.Min(Data.dashAmount, _dashesLeft + 1);
+	}
+	#endregion
+
 	#region OTHER MOVEMENT METHODS
 	private void Slide()
 	{
@@ -416,6 +533,17 @@ public class PlayerMovement : MonoBehaviour
 		else
 			return false;
 	}
+
+	private bool CanDash()
+	{
+		if (!IsDashing && _dashesLeft < Data.dashAmount && LastOnGroundTime > 0 && !_dashRefilling)
+		{
+			StartCoroutine(nameof(RefillDash), 1);
+		}
+
+		return _dashesLeft > 0;
+	}
+
     #endregion
 
 
