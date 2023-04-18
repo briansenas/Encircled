@@ -58,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private Transform _frontWallCheckPoint;
 	[SerializeField] private Transform _backWallCheckPoint;
 	[SerializeField] private Vector2 _wallCheckSize = new Vector2(0.5f, 1f);
-	[SerializeField] private InputActionReference _jumpReference; 
 
     [Header("Layers & Tags")]
 	[SerializeField] private LayerMask _groundLayer;
@@ -69,31 +68,24 @@ public class PlayerMovement : MonoBehaviour
 		RB = GetComponent<Rigidbody2D>();
 	}
 
-	private void OnEnable() {
-		_jumpReference.action.Enable(); 
-	}
-
-	private void OnDisable() {
-		_jumpReference.action.Disable();
-	}
-
 	private void Start()
 	{
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
-
-		_jumpReference.action.started += context => {
-			OnJumpInput(); 
-		}; 
-
-		_jumpReference.action.performed += context => {
-			OnJumpUpInput(); 
-		}; 
 	}
 
 	public void onMove(InputAction.CallbackContext context){
 		_moveInput = context.ReadValue<Vector2>(); 
 	}
+
+	public void onJump(InputAction.CallbackContext context){
+		if(context.started){
+			OnJumpInput(); 
+		}
+		if(context.performed){
+			OnJumpUpInput(); 
+		}
+	} 
 
 	private void Update()
 	{
@@ -397,10 +389,14 @@ public class PlayerMovement : MonoBehaviour
 		return LastOnGroundTime > 0 && !IsJumping;
     }
 
+	/* [WARNING] The position of the Collider can cause LastOnWallTime > 0 and therefore activate 
+	This function in air (without a wall nearby) causing the player to be launched 
+	*/ 
 	private bool CanWallJump()
     {
-		return LastPressedJumpTime > 0 && LastOnWallTime > 0 && LastOnGroundTime <= 0 && (!IsWallJumping ||
-			 (LastOnWallRightTime > 0 && _lastWallJumpDir == 1) || (LastOnWallLeftTime > 0 && _lastWallJumpDir == -1));
+		return LastPressedJumpTime > 0 && LastOnWallTime > 0 && LastOnGroundTime <= 0 && 
+				(!IsWallJumping || (LastOnWallRightTime > 0 && _lastWallJumpDir == 1) 
+				|| (LastOnWallLeftTime > 0 && _lastWallJumpDir == -1));
 	}
 
 	private bool CanJumpCut()

@@ -10,35 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0e8dc71af1b1977e970c673be2c3e41, type: 3}
-  m_Name: MeatBall
+  m_Name: Brians-Data
   m_EditorClassIdentifier: 
-  gravityStrength: -44.444447
-  gravityScale: 3.4188037
+  gravityStrength: -111.1111
+  gravityScale: 8.547008
   fallGravityMult: 2
   maxFallSpeed: 20
   fastFallGravityMult: 2
   maxFastFallSpeed: 20
   runMaxSpeed: 25
-  runAcceleration: 2
-  runAccelAmount: 4
-  runDecceleration: 10
-  runDeccelAmount: 20
-  accelInAir: 1
-  deccelInAir: 0
+  runAcceleration: 10
+  runAccelAmount: 20
+  runDecceleration: 5
+  runDeccelAmount: 10
+  accelInAir: 0.7
+  deccelInAir: 0.3
   doConserveMomentum: 1
-  jumpHeight: 4.5
-  jumpTimeToApex: 0.45
-  jumpForce: 20
+  jumpHeight: 5
+  jumpTimeToApex: 0.3
+  jumpForce: 33.333332
   jumpCutGravityMult: 4
-  jumpHangGravityMult: 0
+  jumpHangGravityMult: 1
   jumpHangTimeThreshold: 0
   jumpHangAccelerationMult: 0
   jumpHangMaxSpeedMult: 0
-  wallJumpForce: {x: 20, y: 20}
-  wallJumpRunLerp: 0.75
+  wallJumpForce: {x: 25, y: 25}
+  wallJumpRunLerp: 0.4
   wallJumpTime: 0.2
   doTurnOnWallJump: 1
-  slideSpeed: -15
-  slideAccel: 3
+  slideSpeed: -4
+  slideAccel: 20
   coyoteTime: 0.2
   jumpInputBufferTime: 0.2
