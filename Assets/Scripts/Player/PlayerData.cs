@@ -60,6 +60,21 @@ public class PlayerData : ScriptableObject
     [Header("Assists")]
 	[Range(0.01f, 0.5f)] public float coyoteTime; //Grace period after falling off a platform, where you can still jump
 	[Range(0.01f, 0.5f)] public float jumpInputBufferTime; //Grace period after pressing jump where a jump will be automatically performed once the requirements (eg. being grounded) are met.
+
+	[Header("Dash")]
+	public int dashAmount;
+	public float dashSpeed;
+	public float dashSleepTime; //Duration for which the game freezes when we press dash but before we read directional input and apply a force
+	[Space(5)]
+	public float dashAttackTime;
+	[Space(5)]
+	public float dashEndTime; //Time after you finish the inital drag phase, smoothing the transition back to idle (or any standard state)
+	public Vector2 dashEndSpeed; //Slows down player, makes dash feel more responsive (used in Celeste)
+	[Range(0f, 1f)] public float dashEndRunLerp; //Slows the affect of player movement while dashing
+	[Space(5)]
+	public float dashRefillTime;
+	[Space(5)]
+	[Range(0.01f, 0.5f)] public float dashInputBufferTime;
 	
 
 	//Unity Callback, called when the inspector updates
