@@ -30,7 +30,7 @@ public class PlayerConfigurationManager : MonoBehaviour
 
     public void HandlePlayerJoin(PlayerInput pi)
     {
-        Debug.Log("player joined " + pi.playerIndex);
+        Debug.Log("Player joined " + pi.playerIndex);
         pi.transform.SetParent(transform);
 
         if(!playerConfigs.Any(p => p.PlayerIndex == pi.playerIndex))

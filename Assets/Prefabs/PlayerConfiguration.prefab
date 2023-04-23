@@ -57,7 +57,31 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0369d0a0-3c2c-4347-9bfd-a660dc40127a
+    m_ActionName: Land/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c2855efb-3354-4dbe-9068-292fd82423c5
+    m_ActionName: Land/Jump[/Keyboard/space,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3e6718ca-2b52-4d31-b825-a6e52730836f
+    m_ActionName: Land/Grapple
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 87c05387-4329-402c-aeb7-3e1656e3c3aa
+    m_ActionName: Land/Crouch[/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: acd16d31-d8e8-489a-ba91-77ee8376a74f
+    m_ActionName: Land/Dash[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8c4212a1-6736-4922-a7ec-11ed8d6dfbad
+    m_ActionName: Land/Join[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Land

@@ -558,5 +558,3 @@ public class PlayerMovement : MonoBehaviour
 	}
     #endregion
 }
-
-// created by Dawnosaur :D
