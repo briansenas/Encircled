@@ -71,6 +71,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Join"",
+                    ""type"": ""Button"",
+                    ""id"": ""8c4212a1-6736-4922-a7ec-11ed8d6dfbad"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -271,6 +280,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90ce6b92-4381-4b2e-83be-6c4593249363"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Join"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b08e8a13-e9d7-40e9-aef0-aaf624d869f3"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Join"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d72619e-1571-485b-97c9-fa302d35e441"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Join"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -284,6 +326,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Land_Grapple = m_Land.FindAction("Grapple", throwIfNotFound: true);
         m_Land_Crouch = m_Land.FindAction("Crouch", throwIfNotFound: true);
         m_Land_Dash = m_Land.FindAction("Dash", throwIfNotFound: true);
+        m_Land_Join = m_Land.FindAction("Join", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -350,6 +393,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Land_Grapple;
     private readonly InputAction m_Land_Crouch;
     private readonly InputAction m_Land_Dash;
+    private readonly InputAction m_Land_Join;
     public struct LandActions
     {
         private @PlayerControls m_Wrapper;
@@ -359,6 +403,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Grapple => m_Wrapper.m_Land_Grapple;
         public InputAction @Crouch => m_Wrapper.m_Land_Crouch;
         public InputAction @Dash => m_Wrapper.m_Land_Dash;
+        public InputAction @Join => m_Wrapper.m_Land_Join;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -383,6 +428,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
+            @Join.started += instance.OnJoin;
+            @Join.performed += instance.OnJoin;
+            @Join.canceled += instance.OnJoin;
         }
 
         private void UnregisterCallbacks(ILandActions instance)
@@ -402,6 +450,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
+            @Join.started -= instance.OnJoin;
+            @Join.performed -= instance.OnJoin;
+            @Join.canceled -= instance.OnJoin;
         }
 
         public void RemoveCallbacks(ILandActions instance)
@@ -426,5 +477,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnGrapple(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnJoin(InputAction.CallbackContext context);
     }
 }
