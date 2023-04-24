@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 6243701473814169622}
   - component: {fileID: 5607070412472499011}
   - component: {fileID: 6852849520048496089}
-  - component: {fileID: 5875705305081552381}
   m_Layer: 6
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -165,6 +164,7 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  playerMesh: {fileID: 3530823503763718940}
 --- !u!58 &5607070412472499011
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -289,19 +289,6 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &5875705305081552381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3530823503763718928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c57b824e411fff243a2b1889e05cf97e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMesh: {fileID: 3530823503763718940}
 --- !u!1 &3530823505318929388
 GameObject:
   m_ObjectHideFlags: 0
