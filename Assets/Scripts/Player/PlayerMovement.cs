@@ -9,6 +9,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem; 
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -70,12 +71,18 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Layers & Tags")]
 	[SerializeField] private LayerMask _groundLayer;
+
+    [SerializeField]
+    private SpriteRenderer playerMesh;
+    private PlayerConfiguration playerConfig;
+    private PlayerControls controls;
 	#endregion
 
     private void Awake()
 	{
 		RB = GetComponent<Rigidbody2D>();
 		_trailRenderer = GetComponent<TrailRenderer>(); 
+		controls = new PlayerControls();
 	}
 
 	private void Start()
@@ -84,24 +91,38 @@ public class PlayerMovement : MonoBehaviour
 		IsFacingRight = true;
 	}
 
-	public void onMove(InputAction.CallbackContext context){
-		_moveInput = context.ReadValue<Vector2>(); 
-	}
+    public void InitializePlayer(PlayerConfiguration config)
+    {
+        playerConfig = config;
+        playerMesh.color = config.playerMaterial.color;
+        config.Input.onActionTriggered += Input_onActionTriggered;
+    }   
 
-	public void onJump(InputAction.CallbackContext context){
-		if(context.started){
-			OnJumpInput(); 
-		}
-		if(context.performed){
-			OnJumpUpInput(); 
-		}
-	} 
+    private void Input_onActionTriggered(CallbackContext context)
+    {
+        
+        if (context.action.name == controls.Land.Move.name)
+        {
+			_moveInput = context.ReadValue<Vector2>(); 
+        }
 
-	public void onDash(InputAction.CallbackContext context){ 
-		if(context.started){
-			OnDashInput(); 
-		}
-	}
+        if (context.action.name == controls.Land.Jump.name)
+        {
+			if(context.started){
+				OnJumpInput(); 
+			}
+			if(context.performed){
+				OnJumpUpInput(); 
+			}
+        }
+
+        if (context.action.name == controls.Land.Dash.name)
+        {
+			if(context.started){
+				OnDashInput(); 
+			}
+        }
+    }
 
 	private void Update()
 	{
