@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelInitializer : MonoBehaviour
 {
     [SerializeField]
-    private Transform[] PlayerSpawns;
+    private List<Transform> PlayerSpawns;
 
     [SerializeField]
     private GameObject playerPrefab;
@@ -14,10 +14,12 @@ public class LevelInitializer : MonoBehaviour
     void Start()
     {
         var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
+        var Count = PlayerSpawns.Count; 
         for (int i = 0; i < playerConfigs.Length; i++)
         {
-            var player = Instantiate(playerPrefab, PlayerSpawns[i].position, PlayerSpawns[i].rotation, gameObject.transform);
-            player.GetComponent<PlayerMovement>().InitializePlayer(playerConfigs[i]);
+            var index = i % Count;
+            var player = Instantiate(playerPrefab, PlayerSpawns[index].position, PlayerSpawns[index].rotation, gameObject.transform);
+            player.GetComponent<PlayerMovement>().InitializePlayer(playerConfigs[index]);
         }
         
     }
