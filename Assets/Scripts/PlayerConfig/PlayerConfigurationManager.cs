@@ -9,7 +9,7 @@ public class PlayerConfigurationManager : MonoBehaviour
 {
     private List<PlayerConfiguration> playerConfigs;
     [SerializeField]
-    private int MaxPlayers = 2;
+    private int MinPlayers = 1; 
 
     public static PlayerConfigurationManager Instance { get; private set; }
 
@@ -30,7 +30,6 @@ public class PlayerConfigurationManager : MonoBehaviour
 
     public void HandlePlayerJoin(PlayerInput pi)
     {
-        Debug.Log("Player joined " + pi.playerIndex);
         pi.transform.SetParent(transform);
 
         if(!playerConfigs.Any(p => p.PlayerIndex == pi.playerIndex))
@@ -52,7 +51,7 @@ public class PlayerConfigurationManager : MonoBehaviour
     public void ReadyPlayer(int index)
     {
         playerConfigs[index].isReady = true;
-        if (playerConfigs.Count == MaxPlayers && playerConfigs.All(p => p.isReady == true))
+        if (playerConfigs.Count >= MinPlayers && playerConfigs.All(p => p.isReady == true))
         {
             SceneManager.LoadScene("GameScene");
         }
