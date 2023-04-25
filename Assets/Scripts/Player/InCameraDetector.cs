@@ -14,13 +14,21 @@ public class InCameraDetector : MonoBehaviour
     // Get the collider from the game object for the aabb
     [SerializeField]
     private CircleCollider2D _collider; 
+    private Rigidbody2D _rb; 
+    private PlayerMovement _playerMovement; 
     // Start is called before the first frame update
     void Start()
     {
         _camera = Camera.main; 
-        // _camera = GameObject.FindWithTag("myCamera").GetComponent<Camera>();
-        // _camera = GameObject.Find("Main Camera").GetComponent<Camera>(); 
         _renderer = GetComponent<SpriteRenderer>(); 
+        _rb = GetComponent<Rigidbody2D>(); 
+        _playerMovement = GetComponent<PlayerMovement>(); 
+    }
+
+    private void Die(){
+        _rb.bodyType = RigidbodyType2D.Static; 
+        PlayerConfigurationManager.Instance.HandleDeath(_playerMovement.playerConfig.PlayerIndex);
+        Destroy(this); 
     }
 
     // Update is called once per frame
@@ -29,8 +37,7 @@ public class InCameraDetector : MonoBehaviour
         var bounds = _collider.bounds; 
         _cameraFrustum = GeometryUtility.CalculateFrustumPlanes(_camera);
         if (!GeometryUtility.TestPlanesAABB(_cameraFrustum, bounds)){
-            Destroy(this); 
-            SceneManager.LoadScene("GameScene");
+            Die(); 
         }
     }
 }
