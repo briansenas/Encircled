@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer playerMesh;
-    private PlayerConfiguration playerConfig;
+    public PlayerConfiguration playerConfig {get; private set; }
     private PlayerControls controls;
 	#endregion
 
@@ -95,8 +95,17 @@ public class PlayerMovement : MonoBehaviour
     {
         playerConfig = config;
         playerMesh.color = config.playerMaterial.color;
-        config.Input.onActionTriggered += Input_onActionTriggered;
+        playerConfig.Input.onActionTriggered += Input_onActionTriggered;
     }   
+
+	public void OnDestroy(){
+		playerConfig.Input.onActionTriggered -= Input_onActionTriggered; 
+	}
+
+	public void UpdatePlayerConfig(PlayerConfiguration config){ 
+        playerConfig = config;
+        playerMesh.color = config.playerMaterial.color;
+	}
 
     private void Input_onActionTriggered(CallbackContext context)
     {

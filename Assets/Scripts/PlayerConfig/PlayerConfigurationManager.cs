@@ -38,9 +38,23 @@ public class PlayerConfigurationManager : MonoBehaviour
         }
     }
 
+    public void HandleDeath(int index)
+    {
+        playerConfigs[index].isDead = true;
+        if (playerConfigs.All(p => p.isDead == true))
+        {
+            SceneManager.LoadScene("GameScene");
+        }
+    }
+
     public List<PlayerConfiguration> GetPlayerConfigs()
     {
         return playerConfigs;
+    }
+
+    public PlayerConfiguration GetPlayerConfig(int index)
+    {
+        return playerConfigs[index];
     }
 
     public void SetPlayerColor(int index, Material color)
@@ -63,11 +77,14 @@ public class PlayerConfiguration
     public PlayerConfiguration(PlayerInput pi)
     {
         PlayerIndex = pi.playerIndex;
+        isReady = false; 
         Input = pi;
+        isDead = true; 
     }
 
     public PlayerInput Input { get; private set; }
     public int PlayerIndex { get; private set; }
     public bool isReady { get; set; }
     public Material playerMaterial {get; set;}
+    public bool isDead {get; set;}
 }
