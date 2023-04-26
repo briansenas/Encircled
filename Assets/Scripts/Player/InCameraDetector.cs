@@ -16,6 +16,7 @@ public class InCameraDetector : MonoBehaviour
     private CircleCollider2D _collider; 
     private Rigidbody2D _rb; 
     private PlayerMovement _playerMovement; 
+    public bool isDead = false; 
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +37,8 @@ public class InCameraDetector : MonoBehaviour
     {
         var bounds = _collider.bounds; 
         _cameraFrustum = GeometryUtility.CalculateFrustumPlanes(_camera);
-        if (!GeometryUtility.TestPlanesAABB(_cameraFrustum, bounds)){
+        if (!GeometryUtility.TestPlanesAABB(_cameraFrustum, bounds) && !isDead){
+            isDead=true; 
             Die(); 
         }
     }
