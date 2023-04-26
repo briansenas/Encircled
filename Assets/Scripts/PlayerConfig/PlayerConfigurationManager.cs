@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class PlayerConfigurationManager : MonoBehaviour
 {
     private List<PlayerConfiguration> playerConfigs;
     [SerializeField]
     private int MinPlayers = 1; 
+
+    public GameObject playerGameOverPrefab;
 
     public static PlayerConfigurationManager Instance { get; private set; }
 
@@ -43,9 +48,16 @@ public class PlayerConfigurationManager : MonoBehaviour
         playerConfigs[index].isDead = true;
         if (playerConfigs.All(p => p.isDead == true))
         {
-            SceneManager.LoadScene("GameScene");
+            var rootMenu = GameObject.Find("GameOverLayout");
+            if(rootMenu != null)
+            {
+                var menu = Instantiate(playerGameOverPrefab, rootMenu.transform);
+                playerConfigs[0].Input.uiInputModule = menu.GetComponentInChildren<InputSystemUIInputModule>();
+                menu.GetComponentInChildren<GameOverScript>().Setup(index);
+            }
         }
     }
+
 
     public List<PlayerConfiguration> GetPlayerConfigs()
     {

@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870af964dffefc255bf5e56f69c3d7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxPlayers: 2
+  MinPlayers: 1
+  playerGameOverPrefab: {fileID: 4866943251987383686, guid: f29d11663184e7cc58d1dfb1ddf78006, type: 3}
 --- !u!114 &8889813117269682785
 MonoBehaviour:
   m_ObjectHideFlags: 0

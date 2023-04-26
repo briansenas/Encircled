@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public void Awake(){ 
+        var configManager = GameObject.FindGameObjectWithTag("PlayerConfigurationManager");
+        if(configManager){
+            Destroy(configManager); 
+        }
+    }
     public void PlayGame(){ 
         SceneManager.LoadScene("PlayerSetup");
     }

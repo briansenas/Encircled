@@ -99,5 +99,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 482caa7018ef93bb38e062cc405caedb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSetupMenuPrefab: {fileID: 5407039019250170427, guid: 79925ab716dde1c2f9a8da482030222f, type: 3}
+  playerSetupMenuPrefab: {fileID: 4949028011730941375, guid: 36baf69d94387f0aea8d06a968122f9d, type: 3}
   input: {fileID: 2453753385550393745}
