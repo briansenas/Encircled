@@ -46,7 +46,6 @@ public class PlayerConfigurationManager : MonoBehaviour
     public void HandleDeath(int index)
     {
         playerConfigs[index].isDead = true;
-        Debug.Log("Player DIED"); 
         if (playerConfigs.All(p => p.isDead == true))
         {
             var rootMap = GameObject.Find("GameMap"); 
