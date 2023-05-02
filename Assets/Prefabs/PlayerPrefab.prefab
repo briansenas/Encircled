@@ -158,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: a17fedb4b1119ee07b25ea01cf1dcde0, type: 2}
   _groundCheckPoint: {fileID: 3530823505318929389}
-  _groundCheckSize: {x: 0.75, y: 0.03}
+  _groundCheckSize: {x: 1, y: 0.03}
   _frontWallCheckPoint: {fileID: 4068604916325126527}
   _backWallCheckPoint: {fileID: 638947197553867546}
   _wallCheckSize: {x: 0.25, y: 0.5}
