@@ -13,7 +13,7 @@ public class InCameraDetector : MonoBehaviour
     private Plane[] _cameraFrustum; 
     // Get the collider from the game object for the aabb
     [SerializeField]
-    private CircleCollider2D _collider; 
+    private BoxCollider2D _collider; 
     private Rigidbody2D _rb; 
     private PlayerMovement _playerMovement; 
     public bool isDead = false; 
