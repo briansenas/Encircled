@@ -303,6 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 5607070412472499011}
+  isDead: 0
 --- !u!1 &3530823505318929388
 GameObject:
   m_ObjectHideFlags: 0
