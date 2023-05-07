@@ -48,7 +48,7 @@ public class PlayerConfigurationManager : MonoBehaviour
         playerConfigs[index].isDead = true;
         if (playerConfigs.All(p => p.isDead == true))
         {
-            var rootMap = GameObject.Find("GameMap"); 
+            var rootMap = GameObject.Find("Map1"); 
             rootMap.SetActive(false); 
             var rootMenu = GameObject.Find("GameOverLayout");
             if(rootMenu != null)
