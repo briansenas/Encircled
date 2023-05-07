@@ -2080,6 +2080,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   waitFor: 3
+  maxSpeed: 10
   pathParent: {fileID: 1571202557}
 --- !u!1 &1571202556
 GameObject:
@@ -2783,7 +2784,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1
-  - first: {x: 48, y: -3, z: 0}
+  - first: {x: 48, y: -4, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 2
@@ -3117,6 +3118,16 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 0
       m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 69, y: -10, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -3456,7 +3467,7 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 11
     m_Data: {fileID: 11400000, guid: 32efee634ad76f8039822456096dcbf9, type: 2}
-  - m_RefCount: 4
+  - m_RefCount: 5
     m_Data: {fileID: 11400000, guid: 6383cd60eb5facd3395e870765aa3a6c, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: c5c3e3658982b28419fbf67c98fe0778, type: 2}
@@ -3495,7 +3506,7 @@ Tilemap:
   m_TileSpriteArray:
   - m_RefCount: 11
     m_Data: {fileID: -2047589859, guid: 2d8394992754bdb6386f9f625e740550, type: 3}
-  - m_RefCount: 4
+  - m_RefCount: 5
     m_Data: {fileID: -1268186576, guid: 2d8394992754bdb6386f9f625e740550, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -3532,7 +3543,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: -1851500811, guid: 2d8394992754bdb6386f9f625e740550, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 40
+  - m_RefCount: 41
     m_Data:
       e00: 1
       e01: 0
@@ -3587,7 +3598,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 44
+  - m_RefCount: 45
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -3703,8 +3714,10 @@ CompositeCollider2D:
         Y: -77935560
       - X: 705023296
         Y: -84311848
-      - X: 704895433
-        Y: -87251096
+      - X: 704945794
+        Y: -86093431
+      - X: 703171146
+        Y: -87252793
       - X: 651042757
         Y: -87304080
       - X: 651040704
@@ -4078,7 +4091,8 @@ CompositeCollider2D:
       - {x: 28.506407, y: 13.390595}
     - - {x: 71.501335, y: -7.7935553}
       - {x: 70.50233, y: -8.431198}
-      - {x: 70.48952, y: -8.72511}
+      - {x: 70.49457, y: -8.60935}
+      - {x: 70.31711, y: -8.725279}
       - {x: 65.10428, y: -8.730379}
       - {x: 65.10404, y: -8.72057}
       - {x: 54.104294, y: -8.731363}

@@ -1,11 +1,3 @@
-/*
-	Created by @DawnosaurDev at youtube.com/c/DawnosaurStudios
-	Thanks so much for checking this out and I hope you find it helpful! 
-	If you have any further queries, questions or feedback feel free to reach out on my twitter or leave a comment on youtube :D
-
-	Feel free to use this in your own games, and I'd love to see anything you make!
- */
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem; 
@@ -13,22 +5,15 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerMovement : MonoBehaviour
 {
-	//Scriptable object which holds all the player's movement parameters. If you don't want to use it
-	//just paste in all the parameters, though you will need to manuly change all references in this script
-
-	//HOW TO: to add the scriptable object, right-click in the project window -> create -> Player Data
-	//Next, drag it into the slot in playerMovement on your player
-
 	public PlayerData Data;
 
 	#region Variables
 	//Components
     public Rigidbody2D RB { get; private set; }
 	private TrailRenderer _trailRenderer; 
+    public BoxCollider2D _collider = null;
 
 	//Variables control the various actions the player can perform at any time.
-	//These are fields which can are public allowing for other sctipts to read them
-	//but can only be privately written to.
 	public bool IsFacingRight { get; private set; }
 	public bool IsJumping { get; private set; }
 	public bool IsWallJumping { get; private set; }
@@ -69,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private Transform _backWallCheckPoint;
 	[SerializeField] private Vector2 _wallCheckSize = new Vector2(0.5f, 1f);
 
+
     [Header("Layers & Tags")]
 	[SerializeField] private LayerMask _groundLayer;
 
@@ -78,11 +64,25 @@ public class PlayerMovement : MonoBehaviour
     private PlayerControls controls;
 	#endregion
 
+    [Header("Crouching")]
+    [SerializeField] float _crouchSpeedMultiplier = 0.5f;
+    [SerializeField] bool _playerIsCrouching = false;
+    [SerializeField] [Range(0.0f, 1.8f)] float _headCheckRadiusMultiplier = 0.9f;
+    [SerializeField] float _crouchTimeMulitplier = 10.0f;
+    [SerializeField] float _playercrouchedHeightTolerance = 0.05f;
+    [SerializeField]float _crouchAmount = 0.5f;
+    float _playerFullHeight = 0.0f; // Note: Gets set in Awake()
+    float _playerCrouchedHeight = 0.0f;  // Note: Gets set in Awake()
+    Vector3 _playerCenterPoint = Vector3.zero;
+
     private void Awake()
 	{
 		RB = GetComponent<Rigidbody2D>();
+		_collider = GetComponent<BoxCollider2D>(); 
 		_trailRenderer = GetComponent<TrailRenderer>(); 
 		controls = new PlayerControls();
+        _playerFullHeight = _collider.size.y;
+        _playerCrouchedHeight = _playerFullHeight - _crouchAmount;
 	}
 
 	private void Start()
@@ -131,6 +131,15 @@ public class PlayerMovement : MonoBehaviour
 				OnDashInput(); 
 			}
         }
+
+		if (context.action.name == controls.Land.Crouch.name){ 
+			if(context.started){
+				Crouch();
+			}
+			if(context.canceled){
+            	Uncrouch();
+			}
+		}
     }
 
 	private void Update()
@@ -144,6 +153,10 @@ public class PlayerMovement : MonoBehaviour
 		LastPressedJumpTime -= Time.deltaTime;
 		LastPressedDashTime -= Time.deltaTime;
 		#endregion
+
+		#region COMPUTE VARIABLES 
+        _playerCenterPoint = RB.position + _collider.offset;
+		#endregion 
 
 		#region INPUT HANDLER
 		if (_moveInput.x != 0)
@@ -244,6 +257,8 @@ public class PlayerMovement : MonoBehaviour
 		else
 			IsSliding = false;
 		#endregion
+
+		
 
 		#region GRAVITY
 		if(!_isDashAttacking)
@@ -384,17 +399,13 @@ public class PlayerMovement : MonoBehaviour
 		//Calculate difference between current velocity and desired velocity
 		float speedDif = targetSpeed - RB.velocity.x;
 		//Calculate force along x-axis to apply to thr player
-
+		if(_playerIsCrouching){
+			speedDif *= _crouchSpeedMultiplier; 
+		}
 		float movement = speedDif * accelRate;
 
 		//Convert this to a vector and apply to rigidbody
 		RB.AddForce(movement * Vector2.right, ForceMode2D.Force);
-
-		/*
-		 * For those interested here is what AddForce() will do
-		 * RB.velocity = new Vector2(RB.velocity.x + (Time.fixedDeltaTime  * speedDif * accelRate) / RB.mass, RB.velocity.y);
-		 * Time.fixedDeltaTime is by default in Unity 0.02 seconds equal to 50 FixedUpdate() calls per second
-		*/
 	}
 
 	private void Turn()
@@ -407,6 +418,69 @@ public class PlayerMovement : MonoBehaviour
 		IsFacingRight = !IsFacingRight;
 	}
     #endregion
+
+	#region CROUCH METHODS
+    private void Crouch()
+    {
+        if (_collider.size.y >= _playerCrouchedHeight + _playercrouchedHeightTolerance)
+        {
+            float time = Time.fixedDeltaTime * _crouchTimeMulitplier;
+            float amount = Mathf.Lerp(0.0f, _crouchAmount, time);
+
+			Vector2 tmp = _collider.size ;
+			_collider.size = new Vector2(tmp.x, tmp.y - amount);
+            _collider.offset = new Vector2(_collider.offset.x, _collider.offset.y + (amount * 0.5f));
+            RB.position = new Vector2(RB.position.x, RB.position.y - amount);
+
+            _playerIsCrouching = true;
+        }
+        else
+        {
+            EnforceExactCharHeight();
+        }
+    }
+
+    private void Uncrouch()
+    {
+        if(_collider.size.y < _playerFullHeight - _playercrouchedHeightTolerance)
+        {
+            float sphereCastRadius = _collider.size.x * _headCheckRadiusMultiplier;
+            float headroomBufferDistance = 0.05f;
+            float sphereCastTravelDistance = (_collider.bounds.extents.y + headroomBufferDistance) - sphereCastRadius;
+            if (!(Physics.SphereCast(_playerCenterPoint, sphereCastRadius, RB.transform.up, out _, sphereCastTravelDistance)))
+            {
+                float time = Time.fixedDeltaTime * _crouchTimeMulitplier;
+                float amount = Mathf.Lerp(0.0f, _crouchAmount, time);
+
+				Vector2 tmp = _collider.size; 
+                _collider.size = new Vector2(tmp.x, tmp.y + amount);
+                _collider.offset = new Vector2(_collider.offset.x, _collider.offset.y - (amount * 0.5f));
+                RB.position = new Vector2(RB.position.x, RB.position.y + amount);
+            }
+        }
+        else
+        {
+            _playerIsCrouching = false;
+            EnforceExactCharHeight();
+        }
+    }
+
+    private void EnforceExactCharHeight()
+    {
+        if (_playerIsCrouching)
+        {
+			Vector2 var = _collider.size ; 
+			_collider.size = new Vector2(var.x,_playerCrouchedHeight) ; 
+            _collider.offset = new Vector2(0.0f, _crouchAmount * 0.5f);
+        }
+        else
+        {
+			Vector2 var = _collider.size ; 
+			_collider.size = new Vector2(var.x,_playerFullHeight) ; 
+            _collider.offset = Vector2.zero;
+        }
+    }
+	#endregion
 
     #region JUMP METHODS
     private void Jump()
