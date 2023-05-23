@@ -87,6 +87,7 @@ public class PlayerSetupMenuController : MonoBehaviour
     }
 
     public void OnDisable(){
-      _input.currentActionMap.FindAction("Cancel").performed -= Undo;
+      if (_input) 
+        _input.currentActionMap.FindAction("Cancel").performed -= Undo;
     }
 }

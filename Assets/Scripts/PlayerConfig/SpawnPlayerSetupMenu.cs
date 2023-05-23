@@ -28,8 +28,4 @@ public class SpawnPlayerSetupMenu : MonoBehaviour
         }
         
     }
-    private void OnDisable(){
-      input.currentActionMap.FindAction("Cancel").performed -= 
-                  menu.GetComponentInChildren<PlayerSetupMenuController>().Undo; 
-    }
 }
