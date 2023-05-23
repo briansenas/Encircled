@@ -19,7 +19,7 @@ public class PlayerConfigurationManager : MonoBehaviour
     private float waitFor = 0f; 
 
     private bool startWaiting = false; 
-    private bool isLoaded = true; 
+    private bool isLoaded = false; 
 
     public GameObject playerGameOverPrefab;
     [SerializeField]
