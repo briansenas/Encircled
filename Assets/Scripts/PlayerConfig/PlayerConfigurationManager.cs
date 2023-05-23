@@ -13,6 +13,12 @@ public class PlayerConfigurationManager : MonoBehaviour
     private List<PlayerConfiguration> playerConfigs;
     [SerializeField]
     private int MinPlayers = 1; 
+    [SerializeField]
+    private float waitForTimer = 5f; 
+    private float waitFor = 0f; 
+
+    private bool startWaiting = false; 
+    private bool isLoaded = true; 
 
     public GameObject playerGameOverPrefab;
 
@@ -26,6 +32,7 @@ public class PlayerConfigurationManager : MonoBehaviour
         }
         else
         {
+            waitFor = waitForTimer; 
             Instance = this;
             DontDestroyOnLoad(Instance);
             playerConfigs = new List<PlayerConfiguration>();
@@ -76,14 +83,43 @@ public class PlayerConfigurationManager : MonoBehaviour
         playerConfigs[index].playerMaterial = color;
     }
 
+    public bool isEveryoneReady(){
+        return playerConfigs.Count >= MinPlayers && playerConfigs.All(p => p.isReady == true); 
+    }
+
+    public bool isEveryoneNotReady(){
+      return playerConfigs.All(p => p.isReady == false); 
+    }
+
+
     public void ReadyPlayer(int index)
     {
         playerConfigs[index].isReady = true;
-        if (playerConfigs.Count >= MinPlayers && playerConfigs.All(p => p.isReady == true))
+        if (isEveryoneReady())
         {
-            SceneManager.LoadScene("GameScene");
+          startWaiting = true; 
         }
     }
+
+    public void UnReadyPlayer(int index) { 
+        playerConfigs[index].isReady = false; 
+        startWaiting = false;  
+    } 
+
+    public void FixedUpdate(){
+         if (startWaiting){ 
+           waitFor -= Time.deltaTime;
+           if (waitFor <= 0 && !isLoaded) {
+             isLoaded = true; 
+            SceneManager.LoadScene("GameScene");
+           }
+         } else{
+           isLoaded = false; 
+            waitFor = waitForTimer; 
+         }
+    }
+       
+
 }
 
 public class PlayerConfiguration

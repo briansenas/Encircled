@@ -696,7 +696,7 @@ MonoBehaviour:
   m_PointAction: {fileID: 0}
   m_MoveAction: {fileID: -3667021059390926831, guid: 14cae704cea60401f982e1f53f6d238b, type: 3}
   m_SubmitAction: {fileID: 4199044104980651609, guid: 14cae704cea60401f982e1f53f6d238b, type: 3}
-  m_CancelAction: {fileID: 0}
+  m_CancelAction: {fileID: 4016090590550065186, guid: 14cae704cea60401f982e1f53f6d238b, type: 3}
   m_LeftClickAction: {fileID: 0}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 0}
@@ -1676,6 +1676,7 @@ MonoBehaviour:
   readyPanel: {fileID: 4949028011612694619}
   menuPanel: {fileID: 4949028011753342869}
   readyButton: {fileID: 4949028012017746295}
+  menuButton: {fileID: 4949028011506129924}
 --- !u!114 &1340479829461356798
 MonoBehaviour:
   m_ObjectHideFlags: 0
