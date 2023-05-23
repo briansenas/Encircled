@@ -25,6 +25,7 @@ public class PlayerSetupMenuController : MonoBehaviour
 
     private float ignoreInputTime = 1.5f;
     private bool inputEnabled;
+    private PlayerInput _input; 
 
     public void setPlayerIndex(int pi)
     {
@@ -62,6 +63,11 @@ public class PlayerSetupMenuController : MonoBehaviour
         readyButton.gameObject.SetActive(false);
     }
 
+    public void setPlayerInput(PlayerInput _playerInput){
+      _input = _playerInput;
+      _input.currentActionMap.FindAction("Cancel").performed += Undo;
+    }
+
     public void Undo(CallbackContext context) { 
       if (!inputEnabled) { return ; } 
       if (readyPanel.activeSelf == true && readyButton.gameObject.activeSelf == false) {
@@ -78,5 +84,9 @@ public class PlayerSetupMenuController : MonoBehaviour
       else if (menuPanel.activeSelf == true 
           && PlayerConfigurationManager.Instance.isEveryoneNotReady()) 
           SceneManager.LoadScene("MainMenu");
+    }
+
+    public void OnDisable(){
+      _input.currentActionMap.FindAction("Cancel").performed -= Undo;
     }
 }

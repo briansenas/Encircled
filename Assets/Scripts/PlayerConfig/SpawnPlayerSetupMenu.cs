@@ -12,17 +12,24 @@ public class SpawnPlayerSetupMenu : MonoBehaviour
     private GameObject rootMenu;
     public PlayerInput input;
 
+    private GameObject menu; 
+    private PlayerSetupMenuController _playerSetupMenuController; 
+
     private void Awake()
     {
         rootMenu = GameObject.Find("SetupPanels");
         if(rootMenu != null)
         {
-            var menu = Instantiate(playerSetupMenuPrefab, rootMenu.transform, false);
-            input.currentActionMap.FindAction("Cancel").performed += 
-                  menu.GetComponentInChildren<PlayerSetupMenuController>().Undo; 
+            menu = Instantiate(playerSetupMenuPrefab, rootMenu.transform, false);
             input.uiInputModule = menu.GetComponentInChildren<InputSystemUIInputModule>();
-            menu.GetComponent<PlayerSetupMenuController>().setPlayerIndex(input.playerIndex);
+            _playerSetupMenuController = menu.GetComponent<PlayerSetupMenuController>(); 
+            _playerSetupMenuController.setPlayerIndex(input.playerIndex);
+            _playerSetupMenuController.setPlayerInput(input);
         }
         
+    }
+    private void OnDisable(){
+      input.currentActionMap.FindAction("Cancel").performed -= 
+                  menu.GetComponentInChildren<PlayerSetupMenuController>().Undo; 
     }
 }
