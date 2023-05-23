@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,8 @@ public class PlayerConfigurationManager : MonoBehaviour
     private bool isLoaded = true; 
 
     public GameObject playerGameOverPrefab;
+    [SerializeField]
+    private TextMeshProUGUI TimerText;
 
     public static PlayerConfigurationManager Instance { get; private set; }
 
@@ -52,7 +55,7 @@ public class PlayerConfigurationManager : MonoBehaviour
 
     public void HandleDeath(int index)
     {
-        playerConfigs[index].isDead = true;
+        playerConfigs[index].Die(); 
         if (playerConfigs.All(p => p.isDead == true))
         {
             var rootMap = GameObject.Find("GameMap"); 
@@ -107,16 +110,28 @@ public class PlayerConfigurationManager : MonoBehaviour
     } 
 
     public void FixedUpdate(){
+      if (!isLoaded){
          if (startWaiting){ 
+           updateTimer(waitFor);
            waitFor -= Time.deltaTime;
            if (waitFor <= 0 && !isLoaded) {
              isLoaded = true; 
             SceneManager.LoadScene("GameScene");
            }
          } else{
-           isLoaded = false; 
-            waitFor = waitForTimer; 
+           if (TimerText) TimerText.enabled = false; 
+           waitFor = waitForTimer; 
          }
+      }
+    }
+
+    public void updateTimer(float time_){
+        if (TimerText) TimerText.enabled=true;
+        time_ += 1;
+        float minutes = Mathf.FloorToInt(time_ / 60); 
+        float seconds = Mathf.FloorToInt(time_ % 60); 
+
+        TimerText.text = string.Format("Steady: {00}", seconds);
     }
        
 
@@ -132,9 +147,24 @@ public class PlayerConfiguration
         isDead = true; 
     }
 
+    public void InitializePlayer(GameObject self_){
+      isDead = false; 
+      isReady = true; 
+      this_ = self_;
+      this_.GetComponent<SpriteRenderer>().enabled=true;
+    }
+
+    public void Die() {
+      isDead = true; 
+      if(this_)
+        this_.GetComponent<SpriteRenderer>().enabled=false;
+    }
+
+    private GameObject this_; 
     public PlayerInput Input { get; private set; }
     public int PlayerIndex { get; private set; }
     public bool isReady { get; set; }
     public Material playerMaterial {get; set;}
     public bool isDead {get; set;}
+
 }

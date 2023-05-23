@@ -19,7 +19,7 @@ public class LevelInitializer : MonoBehaviour
         {
             var index = i % Count;
             var player = Instantiate(playerPrefab, PlayerSpawns[index].position, PlayerSpawns[index].rotation, gameObject.transform);
-            playerConfigs[index].isDead = false; 
+            playerConfigs[index].InitializePlayer(player);
             player.GetComponent<PlayerMovement>().InitializePlayer(playerConfigs[index]);
         }
         
