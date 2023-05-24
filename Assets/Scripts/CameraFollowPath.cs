@@ -6,6 +6,7 @@ public class CameraFollowPath : MonoBehaviour {
 
   [SerializeField] private AnimationCurve _animationCurve; 
   [SerializeField] private TextMeshProUGUI TimerText;
+  [SerializeField] private bool Move = false; 
 
 	public float speed = 0f;
   public float waitFor = 5f; 
@@ -35,13 +36,15 @@ public class CameraFollowPath : MonoBehaviour {
         if(Time.time > waitFor)
         {
             disableTimer(); 
-            transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, _animationCurve.Evaluate(speed));
-            if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f) 
-            {
+            if(Move){
+              transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, _animationCurve.Evaluate(speed));
+              if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f) 
+              {
                 index++;
                 index %= pathParent.childCount;
                 targetPoint = pathParent.GetChild (index);
                 speed++; 
+              }
             }
         }
         else{
