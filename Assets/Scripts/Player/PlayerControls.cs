@@ -89,6 +89,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grab"",
+                    ""type"": ""Button"",
+                    ""id"": ""81d26b03-58c2-4351-84f7-eefd31a2731e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d8ba256-bb81-41e5-9f17-84593570d978"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -344,6 +362,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca0eff94-525b-4525-8492-10bb8b254e97"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14966bda-6bb5-4c10-aa4f-0cac08fa74af"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f88acbfe-90f8-4ee3-81ae-cdcdfe4b7d5b"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71579876-b3c9-41cb-80c6-b9f93f2d5ba4"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -359,6 +421,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Land_Dash = m_Land.FindAction("Dash", throwIfNotFound: true);
         m_Land_Join = m_Land.FindAction("Join", throwIfNotFound: true);
         m_Land_Cancel = m_Land.FindAction("Cancel", throwIfNotFound: true);
+        m_Land_Grab = m_Land.FindAction("Grab", throwIfNotFound: true);
+        m_Land_Throw = m_Land.FindAction("Throw", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -427,6 +491,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Land_Dash;
     private readonly InputAction m_Land_Join;
     private readonly InputAction m_Land_Cancel;
+    private readonly InputAction m_Land_Grab;
+    private readonly InputAction m_Land_Throw;
     public struct LandActions
     {
         private @PlayerControls m_Wrapper;
@@ -438,6 +504,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_Land_Dash;
         public InputAction @Join => m_Wrapper.m_Land_Join;
         public InputAction @Cancel => m_Wrapper.m_Land_Cancel;
+        public InputAction @Grab => m_Wrapper.m_Land_Grab;
+        public InputAction @Throw => m_Wrapper.m_Land_Throw;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -468,6 +536,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @Grab.started += instance.OnGrab;
+            @Grab.performed += instance.OnGrab;
+            @Grab.canceled += instance.OnGrab;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
         }
 
         private void UnregisterCallbacks(ILandActions instance)
@@ -493,6 +567,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @Grab.started -= instance.OnGrab;
+            @Grab.performed -= instance.OnGrab;
+            @Grab.canceled -= instance.OnGrab;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
         }
 
         public void RemoveCallbacks(ILandActions instance)
@@ -519,5 +599,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnJoin(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnGrab(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
     }
 }
