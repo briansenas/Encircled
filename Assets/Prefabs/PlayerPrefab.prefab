@@ -193,7 +193,7 @@ MonoBehaviour:
   Data: {fileID: 11400000, guid: a17fedb4b1119ee07b25ea01cf1dcde0, type: 2}
   _collider: {fileID: 0}
   _groundCheckPoint: {fileID: 3530823505318929389}
-  _groundCheckSize: {x: 1, y: 0.03}
+  _groundCheckSize: {x: 0.75, y: 0.03}
   _frontWallCheckPoint: {fileID: 4068604916325126527}
   _pickUpLocation: {fileID: 7744334544013595154}
   _rayCastFrom: {fileID: 6453066987144545799}
@@ -212,7 +212,7 @@ MonoBehaviour:
   pickUpLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  pickUpDistance: 2
+  IsGrabbed: 0
 --- !u!96 &6852849520048496089
 TrailRenderer:
   serializedVersion: 2
@@ -373,6 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 495ccede651bcb39b8cc4fb2afbb67ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lerpSpeed: 20
 --- !u!1 &3530823505318929388
 GameObject:
   m_ObjectHideFlags: 0
