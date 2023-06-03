@@ -42,12 +42,17 @@ MonoBehaviour:
   slideAccel: 20
   coyoteTime: 0.2
   jumpInputBufferTime: 0.2
-  dashAmount: 1
+  dashAmount: 3
   dashSpeed: 40
-  dashSleepTime: 0.1
+  dashSleepTime: 2
   dashAttackTime: 0.15
   dashEndTime: 0.15
   dashEndSpeed: {x: 10, y: 10}
   dashEndRunLerp: 0.5
   dashRefillTime: 5
   dashInputBufferTime: 0.2
+  breakFreeProbability: 0.05
+  pickUpDistance: 2
+  myStrength: {x: 7000, y: 7000}
+  punchAmount: 15
+  punchRefillTime: 1

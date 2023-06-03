@@ -6,36 +6,36 @@ using TMPro;
 
 public class GameOverScript : MonoBehaviour
 {
-    [SerializeField]
-    public TextMeshProUGUI playersText; 
+  [SerializeField]
+  public TextMeshProUGUI playersText; 
 
-    private float ignoreInputTime = 1.5f;
-    private bool inputEnabled; 
+  private float ignoreInputTime = 1.5f;
+  private bool inputEnabled; 
 
 
-    public void Setup(int playerIndex){ 
-        playersText.text = "Player " + ( playerIndex + 1 ) + " WON!"; 
-    }
+  public void Setup(int playerIndex){ 
+    playersText.text = "Player " + ( playerIndex + 1 ) + " WON!"; 
+  }
 
-    // Update is called once per frame
-    void Update()
+  // Update is called once per frame
+  void Update()
+  {
+    if(Time.time > ignoreInputTime)
     {
-        if(Time.time > ignoreInputTime)
-        {
-            inputEnabled = true;
-        }
+      inputEnabled = true;
     }
+  }
 
-    public void MainMenu()
-    {
-        if(!inputEnabled) { return; }
-        SceneManager.LoadScene("MainMenu"); 
-        
-    }
+  public void MainMenu()
+  {
+    if(!inputEnabled) { return; }
+    SceneManager.LoadScene("MainMenu"); 
 
-    public void Restart()
-    {
-        if (!inputEnabled) { return; }
-        SceneManager.LoadScene("GameScene");
-    }
+  }
+
+  public void Restart()
+  {
+    if (!inputEnabled) { return; }
+    SceneManager.LoadScene("GameScene");
+  }
 }

@@ -3,23 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using static UnityEngine.InputSystem.InputAction;
 
 public class SpawnPlayerSetupMenu : MonoBehaviour
 {
-    public GameObject playerSetupMenuPrefab;
+  public GameObject playerSetupMenuPrefab;
 
-    private GameObject rootMenu;
-    public PlayerInput input;
+  private GameObject rootMenu;
+  public PlayerInput input;
 
-    private void Awake()
+  private GameObject menu; 
+  private PlayerSetupMenuController _playerSetupMenuController; 
+
+  private void Awake()
+  {
+    rootMenu = GameObject.Find("SetupPanels");
+    if(rootMenu != null)
     {
-        rootMenu = GameObject.Find("SetupPanels");
-        if(rootMenu != null)
-        {
-            var menu = Instantiate(playerSetupMenuPrefab, rootMenu.transform, false);
-            input.uiInputModule = menu.GetComponentInChildren<InputSystemUIInputModule>();
-            menu.GetComponent<PlayerSetupMenuController>().setPlayerIndex(input.playerIndex);
-        }
-        
+      menu = Instantiate(playerSetupMenuPrefab, rootMenu.transform, false);
+      input.uiInputModule = menu.GetComponentInChildren<InputSystemUIInputModule>();
+      _playerSetupMenuController = menu.GetComponent<PlayerSetupMenuController>(); 
+      _playerSetupMenuController.setPlayerIndex(input.playerIndex);
+      _playerSetupMenuController.setPlayerInput(input);
     }
+
+  }
 }
