@@ -127,52 +127,54 @@ public class PlayerMovement : MonoBehaviour
 
   private void Input_onActionTriggered(CallbackContext context)
   {
-
-    if (context.action.name == controls.Land.Move.name)
+    if(!PauseMenu.isPaused)
     {
-      _moveInput = context.ReadValue<Vector2>(); 
-      if (IsGrabbed) tryBreakFree(); 
-    }
+      if (context.action.name == controls.Land.Move.name)
+      {
+        _moveInput = context.ReadValue<Vector2>(); 
+        if (IsGrabbed) tryBreakFree(); 
+      }
 
-    if (context.action.name == controls.Land.Jump.name)
-    {
-      if(context.started){
-        OnJumpInput(); 
+      if (context.action.name == controls.Land.Jump.name)
+      {
+        if(context.started){
+          OnJumpInput(); 
+        }
+        if(context.performed){
+          OnJumpUpInput(); 
+        }
       }
-      if(context.performed){
-        OnJumpUpInput(); 
-      }
-    }
 
-    if (context.action.name == controls.Land.Dash.name)
-    {
-      if(context.started){
-        OnDashInput(); 
+      if (context.action.name == controls.Land.Dash.name)
+      {
+        if(context.started){
+          OnDashInput(); 
+        }
+        breakFree(); 
       }
-      breakFree(); 
-    }
 
-    if (context.action.name == controls.Land.Crouch.name){ 
-      if(context.started){
-        Crouch();
+      if (context.action.name == controls.Land.Crouch.name){ 
+        if(context.started){
+          Crouch();
+        }
+        if(context.canceled){
+          Uncrouch();
+        }
       }
-      if(context.canceled){
-        Uncrouch();
-      }
-    }
 
-    if (context.action.name == controls.Land.Grab.name){
-      if(context.started && objectGrabbable==null){
-        GrabObject(); 
-      }else if(context.started && objectGrabbable!=null){
-        DropObject(); 
+      if (context.action.name == controls.Land.Grab.name){
+        if(context.started && objectGrabbable==null){
+          GrabObject(); 
+        }else if(context.started && objectGrabbable!=null){
+          DropObject(); 
+        }
       }
-    }
 
-    if (context.action.name == controls.Land.Throw.name){
+      if (context.action.name == controls.Land.Throw.name){
       if(context.started){
         PunchOrThrow(); 
       }
+    }
     }
   }
 
