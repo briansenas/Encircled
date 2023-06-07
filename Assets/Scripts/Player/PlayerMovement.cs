@@ -90,6 +90,8 @@ public class PlayerMovement : MonoBehaviour
   private int _punchesLeft; 
   private bool _punchRefilling; 
 
+  private PlayerConfigurationManager playerConfigurationManager; 
+
   private void Awake()
   {
     RB = GetComponent<Rigidbody2D>();
@@ -114,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
     playerConfig = config;
     playerMesh.color = config.playerMaterial.color;
     playerConfig.Input.onActionTriggered += Input_onActionTriggered;
+    playerConfigurationManager = PlayerConfigurationManager.Instance;
   }   
 
   public void OnDestroy(){
@@ -127,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
 
   private void Input_onActionTriggered(CallbackContext context)
   {
-    if(!PauseMenu.isPaused)
+    if(!playerConfigurationManager.isPaused)
     {
       if (context.action.name == controls.Land.Move.name)
       {
@@ -174,7 +177,13 @@ public class PlayerMovement : MonoBehaviour
       if(context.started){
         PunchOrThrow(); 
       }
-    }
+
+      }
+
+      if (context.action.name == controls.Land.Pause.name){
+        if(!playerConfigurationManager.isPaused)
+          playerConfigurationManager.PauseGame(playerConfig.PlayerIndex);  
+      }
     }
   }
 

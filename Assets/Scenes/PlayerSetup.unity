@@ -925,5 +925,9 @@ PrefabInstance:
       propertyPath: TimerText
       value: 
       objectReference: {fileID: 1894994566}
+    - target: {fileID: 8517691058911671898, guid: a4de857b81b877c3780eacf541a54b79, type: 3}
+      propertyPath: playerPauseMenuPrefab
+      value: 
+      objectReference: {fileID: 2667262752350369049, guid: 0d8f094582c1a33e08c407ead5597d95, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4de857b81b877c3780eacf541a54b79, type: 3}

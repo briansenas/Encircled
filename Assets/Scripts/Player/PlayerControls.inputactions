@@ -88,7 +88,7 @@
                 },
                 {
                     "name": "Pointer",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "9a099e73-1901-401d-8f68-68858d0b5b1b",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -99,6 +99,15 @@
                     "name": "Trigger",
                     "type": "Button",
                     "id": "8baca7e3-2534-427b-b804-745812d554dc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "a9a0d979-8307-46cf-83e2-23f8eec40c5a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -444,6 +453,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Trigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "88e97468-adc8-47aa-9379-fa84fa8ccc80",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "45ed1e85-2a7f-454c-a6c0-d4e0da88223e",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6890859e-53ec-4885-85e3-a5b5fd9cee10",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

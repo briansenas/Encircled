@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class PlayerConfigurationManager : MonoBehaviour
 {
   private List<PlayerConfiguration> playerConfigs;
+  public bool isPaused;
   [SerializeField]
   private int MinPlayers = 1; 
   [SerializeField]
@@ -22,10 +23,12 @@ public class PlayerConfigurationManager : MonoBehaviour
   private bool isLoaded = false; 
 
   public GameObject playerGameOverPrefab;
+  public GameObject playerPauseMenuPrefab;
   [SerializeField]
   private TextMeshProUGUI TimerText;
 
   public static PlayerConfigurationManager Instance { get; private set; }
+  private PauseMenu _pauseMenu; 
 
   private void Awake()
   {
@@ -132,6 +135,19 @@ public class PlayerConfigurationManager : MonoBehaviour
     float seconds = Mathf.FloorToInt(time_ % 60); 
 
     TimerText.text = string.Format("Steady: {00}", seconds);
+  }
+
+  public void PauseGame(int index)
+  {
+
+      var rootMenu = GameObject.Find("GameOverLayout");
+      if(rootMenu != null)
+      {
+        var menu = Instantiate(playerPauseMenuPrefab, rootMenu.transform);
+        playerConfigs[index].Input.uiInputModule = menu.GetComponentInChildren<InputSystemUIInputModule>();
+      }
+      Time.timeScale = 0f;
+      isPaused = true;
   }
 
 

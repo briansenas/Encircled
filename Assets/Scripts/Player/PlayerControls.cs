@@ -110,7 +110,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Pointer"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""9a099e73-1901-401d-8f68-68858d0b5b1b"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -121,6 +121,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Trigger"",
                     ""type"": ""Button"",
                     ""id"": ""8baca7e3-2534-427b-b804-745812d554dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""a9a0d979-8307-46cf-83e2-23f8eec40c5a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -468,6 +477,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Trigger"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88e97468-adc8-47aa-9379-fa84fa8ccc80"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45ed1e85-2a7f-454c-a6c0-d4e0da88223e"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6890859e-53ec-4885-85e3-a5b5fd9cee10"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -487,6 +529,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Land_Throw = m_Land.FindAction("Throw", throwIfNotFound: true);
         m_Land_Pointer = m_Land.FindAction("Pointer", throwIfNotFound: true);
         m_Land_Trigger = m_Land.FindAction("Trigger", throwIfNotFound: true);
+        m_Land_Pause = m_Land.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -559,6 +602,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Land_Throw;
     private readonly InputAction m_Land_Pointer;
     private readonly InputAction m_Land_Trigger;
+    private readonly InputAction m_Land_Pause;
     public struct LandActions
     {
         private @PlayerControls m_Wrapper;
@@ -574,6 +618,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Throw => m_Wrapper.m_Land_Throw;
         public InputAction @Pointer => m_Wrapper.m_Land_Pointer;
         public InputAction @Trigger => m_Wrapper.m_Land_Trigger;
+        public InputAction @Pause => m_Wrapper.m_Land_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -616,6 +661,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Trigger.started += instance.OnTrigger;
             @Trigger.performed += instance.OnTrigger;
             @Trigger.canceled += instance.OnTrigger;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(ILandActions instance)
@@ -653,6 +701,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Trigger.started -= instance.OnTrigger;
             @Trigger.performed -= instance.OnTrigger;
             @Trigger.canceled -= instance.OnTrigger;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(ILandActions instance)
@@ -683,5 +734,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnThrow(InputAction.CallbackContext context);
         void OnPointer(InputAction.CallbackContext context);
         void OnTrigger(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }
