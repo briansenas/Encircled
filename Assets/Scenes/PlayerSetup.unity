@@ -929,5 +929,25 @@ PrefabInstance:
       propertyPath: playerPauseMenuPrefab
       value: 
       objectReference: {fileID: 2667262752350369049, guid: 0d8f094582c1a33e08c407ead5597d95, type: 3}
+    - target: {fileID: 8889813117269682785, guid: a4de857b81b877c3780eacf541a54b79, type: 3}
+      propertyPath: m_JoinBehavior
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8889813117269682785, guid: a4de857b81b877c3780eacf541a54b79, type: 3}
+      propertyPath: m_JoinAction.m_Reference
+      value: 
+      objectReference: {fileID: 4199044104980651609, guid: 14cae704cea60401f982e1f53f6d238b, type: 3}
+    - target: {fileID: 8889813117269682785, guid: a4de857b81b877c3780eacf541a54b79, type: 3}
+      propertyPath: m_JoinAction.m_Action.m_Id
+      value: 8c40d6e5-1a7e-48ab-8a04-3570f373c91e
+      objectReference: {fileID: 0}
+    - target: {fileID: 8889813117269682785, guid: a4de857b81b877c3780eacf541a54b79, type: 3}
+      propertyPath: m_JoinAction.m_UseReference
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8889813117269682785, guid: a4de857b81b877c3780eacf541a54b79, type: 3}
+      propertyPath: m_JoinAction.m_Action.m_Name
+      value: Join
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4de857b81b877c3780eacf541a54b79, type: 3}

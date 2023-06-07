@@ -756,6 +756,7 @@ public class PlayerMovement : MonoBehaviour
     if (hitInfo.collider!=null) {
       if (hitInfo.transform.TryGetComponent(out objectGrabbable)) {
         objectGrabbable.Grab(_pickUpLocation.transform, hitInfo.transform, this);
+        if (!IsGrabbed) objectGrabbable = null; 
       }
     }
   }
@@ -787,7 +788,6 @@ public class PlayerMovement : MonoBehaviour
   private void breakFree(){
     if(!IsGrabbed) return; 
     if(!_grabbedBy) return; 
-
     _grabbedBy.DropObject();
   }
 
