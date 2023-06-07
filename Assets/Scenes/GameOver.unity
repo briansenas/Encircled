@@ -230,6 +230,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2175098805523149470, guid: f29d11663184e7cc58d1dfb1ddf78006, type: 3}
+      propertyPath: m_PointAction
+      value: 
+      objectReference: {fileID: -1860440416184195267, guid: 14cae704cea60401f982e1f53f6d238b, type: 3}
+    - target: {fileID: 2175098805523149470, guid: f29d11663184e7cc58d1dfb1ddf78006, type: 3}
+      propertyPath: m_LeftClickAction
+      value: 
+      objectReference: {fileID: 5253404094235916193, guid: 14cae704cea60401f982e1f53f6d238b, type: 3}
+    - target: {fileID: 2175098805523149470, guid: f29d11663184e7cc58d1dfb1ddf78006, type: 3}
+      propertyPath: m_DeselectOnBackgroundClick
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4866943250667304379, guid: f29d11663184e7cc58d1dfb1ddf78006, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
