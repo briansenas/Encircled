@@ -153,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
         if(context.started){
           OnDashInput(); 
         }
-        breakFree(); 
+        if (IsGrabbed) tryBreakFree(Data.dashFreeProbability);
       }
 
       if (context.action.name == controls.Land.Crouch.name){ 
@@ -755,8 +755,7 @@ public class PlayerMovement : MonoBehaviour
     RaycastHit2D hitInfo = getObjectInRay(); 
     if (hitInfo.collider!=null) {
       if (hitInfo.transform.TryGetComponent(out objectGrabbable)) {
-        objectGrabbable.Grab(_pickUpLocation.transform, hitInfo.transform, this);
-        if (!IsGrabbed) objectGrabbable = null; 
+        objectGrabbable = objectGrabbable.Grab(_pickUpLocation.transform, hitInfo.transform, this);
       }
     }
   }
@@ -780,8 +779,9 @@ public class PlayerMovement : MonoBehaviour
       return false;
   }
 
-  private void tryBreakFree(){
-    if(ProbabilityCheck(Data.breakFreeProbability))
+  private void tryBreakFree(float prob = 0f){
+    prob = Mathf.Max(prob, Data.breakFreeProbability);
+    if(ProbabilityCheck(prob))
       breakFree();
   }
 

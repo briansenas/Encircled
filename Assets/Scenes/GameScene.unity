@@ -2777,7 +2777,7 @@ MonoBehaviour:
     m_PostInfinity: 0
     m_RotationOrder: 4
   TimerText: {fileID: 1539923063}
-  Move: 1
+  Move: 0
   speed: 0
   waitFor: 3
   pathParent: {fileID: 1571202557}

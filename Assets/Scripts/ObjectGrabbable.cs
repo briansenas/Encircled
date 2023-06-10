@@ -18,10 +18,10 @@ public class ObjectGrabbable : MonoBehaviour {
     _myMovement = GetComponent<PlayerMovement>(); 
   }
 
-  public void Grab(Transform objectGrabPointTransform, Transform objectTransform,
+  public ObjectGrabbable Grab(Transform objectGrabPointTransform, Transform objectTransform,
       PlayerMovement grabbedBy) {
-    if (grabbedBy == _myMovement) return; 
-    if (_myMovement.IsGrabbed) return; 
+    if (grabbedBy == _myMovement) return null; 
+    if (_myMovement.IsGrabbed) return null; 
 
     _grabbedByMovement = grabbedBy; 
     _myMovement.setGrabbed(_grabbedByMovement); 
@@ -34,6 +34,7 @@ public class ObjectGrabbable : MonoBehaviour {
     {
       child.gameObject.layer = _layer; 
     }
+    return this;
   }
 
   public void Drop() {
@@ -55,7 +56,7 @@ public class ObjectGrabbable : MonoBehaviour {
   } 
 
   private void FixedUpdate() {
-    if (_objectGrabPointTransform != null) {
+    if (_objectGrabPointTransform != null && _objectRigidbody.bodyType != RigidbodyType2D.Static) {
       Vector3 newPosition = Vector3.Lerp(transform.position, _objectGrabPointTransform.position, Time.deltaTime * lerpSpeed);
       _objectRigidbody.MovePosition(newPosition);
     }

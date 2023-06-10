@@ -67,7 +67,6 @@ public class PlayerConfigurationManager : MonoBehaviour
       if(rootMenu != null)
       {
         var menu = Instantiate(playerGameOverPrefab, rootMenu.transform);
-        playerConfigs[0].Input.uiInputModule = menu.GetComponentInChildren<InputSystemUIInputModule>();
         menu.GetComponentInChildren<GameOverScript>().Setup(index);
       }
     }

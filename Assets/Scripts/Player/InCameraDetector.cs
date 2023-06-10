@@ -27,7 +27,7 @@ public class InCameraDetector : MonoBehaviour
   }
 
   private void Die(){
-    _rb.bodyType = RigidbodyType2D.Static; 
+    // _rb.bodyType = RigidbodyType2D.Static; 
     PlayerConfigurationManager.Instance.HandleDeath(_playerMovement.playerConfig.PlayerIndex);
     Destroy(this); 
   }

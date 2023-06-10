@@ -21,8 +21,8 @@ MonoBehaviour:
   runMaxSpeed: 25
   runAcceleration: 10
   runAccelAmount: 20
-  runDecceleration: 8
-  runDeccelAmount: 16
+  runDecceleration: 10
+  runDeccelAmount: 20
   accelInAir: 0.7
   deccelInAir: 0.3
   doConserveMomentum: 1
@@ -52,6 +52,7 @@ MonoBehaviour:
   dashRefillTime: 5
   dashInputBufferTime: 0.2
   breakFreeProbability: 0.05
+  dashFreeProbability: 0.2
   pickUpDistance: 2
   myStrength: {x: 7000, y: 7000}
   punchAmount: 15

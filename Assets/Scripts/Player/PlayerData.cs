@@ -79,6 +79,7 @@ public class PlayerData : ScriptableObject
 
   [Header("BreakFree")]
   [Range(0f, 1f)] public float breakFreeProbability = 0.3f; 
+  [Range(0f, 1f)] public float dashFreeProbability = 0.5f; 
   public float pickUpDistance = 2f;
   public Vector2 myStrength;
   public int punchAmount = 3;
