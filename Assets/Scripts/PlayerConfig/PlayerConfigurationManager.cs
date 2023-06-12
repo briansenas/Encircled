@@ -52,6 +52,7 @@ public class PlayerConfigurationManager : MonoBehaviour
 
     if(!playerConfigs.Any(p => p.PlayerIndex == pi.playerIndex))
     {
+      startWaiting = false;
       playerConfigs.Add(new PlayerConfiguration(pi));
     }
   }
@@ -106,6 +107,21 @@ public class PlayerConfigurationManager : MonoBehaviour
     }
   }
 
+  public void FreezeAll(){
+    foreach (var player in playerConfigs)
+    {
+      player.Freeze();  
+    } 
+  }
+
+  public void UnfreezeAll(){
+    foreach (var player in playerConfigs)
+    {
+      // if (!player.isDead)
+        player.Unfreeze();  
+    } 
+  }
+
   public void UnReadyPlayer(int index) { 
     playerConfigs[index].isReady = false; 
     startWaiting = false;  
@@ -138,7 +154,6 @@ public class PlayerConfigurationManager : MonoBehaviour
 
   public void PauseGame(int index)
   {
-
       var rootMenu = GameObject.Find("GameOverLayout");
       if(rootMenu != null)
       {
@@ -176,6 +191,14 @@ public class PlayerConfiguration
       this_.GetComponent<SpriteRenderer>().enabled=false;
       this_.GetComponent<BoxCollider2D>().enabled = false; 
     }
+  }
+
+  public void Freeze(){
+    this_.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static; 
+  }
+
+  public void Unfreeze(){
+    this_.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic; 
   }
 
   private GameObject this_; 

@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
 
     public GameObject pauseMenu;
     public Button resumeButton; 
+    public float waitFor = .5f; 
 
     public void Start(){
       if(resumeButton) 
@@ -19,6 +20,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         PlayerConfigurationManager.Instance.isPaused = false;
+        Camera.main.GetComponent<CameraFollowPath>().waitFor = waitFor;
         Destroy(pauseMenu); 
         Destroy(this); 
     }

@@ -92,6 +92,8 @@ public class PlayerMovement : MonoBehaviour
 
   private PlayerConfigurationManager playerConfigurationManager; 
 
+  private CameraFollowPath _cameraFollowPath; 
+
   private void Awake()
   {
     RB = GetComponent<Rigidbody2D>();
@@ -103,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
     _punchesLeft = Data.punchAmount; 
     _dashesLeft = Data.dashAmount; 
     _punchHoldTime = 0.5f;
+    _cameraFollowPath = Camera.main.GetComponent<CameraFollowPath>(); 
   }
 
   private void Start()

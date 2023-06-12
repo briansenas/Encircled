@@ -6,7 +6,8 @@ public class CameraFollowPath : MonoBehaviour {
 
   [SerializeField] private AnimationCurve _animationCurve; 
   [SerializeField] private TextMeshProUGUI TimerText;
-  [SerializeField] private bool Move = false; 
+  [SerializeField] private bool _Move_ = false; 
+  private bool Move = false; 
 
   public float speed = 0f;
   public float waitFor = 5f; 
@@ -32,11 +33,11 @@ public class CameraFollowPath : MonoBehaviour {
   }
 
   // Update is called once per frame
-  void FixedUpdate () {
-    if(Time.time > waitFor)
+  void Update () {
+    if(waitFor <= 0)
     {
       disableTimer(); 
-      if(Move){
+      if(_Move_ && Move && !PlayerConfigurationManager.Instance.isPaused){
         transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, _animationCurve.Evaluate(speed));
         if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f) 
         {
@@ -48,13 +49,15 @@ public class CameraFollowPath : MonoBehaviour {
       }
     }
     else{
-      updateTimer(waitFor - Time.time); 
+      waitFor -= Time.deltaTime; 
+      updateTimer(waitFor); 
     }
 
   }
 
   public void disableTimer(){
     TimerText.text = "Run! You must to survive."; 
+    Move = true;
   }
 
   public void updateTimer(float time_){

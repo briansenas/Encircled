@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 2667262752350369049}
   resumeButton: {fileID: 2667262752084268569}
+  waitFor: 0.5
 --- !u!1 &2667262751183659568
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,6 +881,6 @@ MonoBehaviour:
   m_ScrollWheelAction: {fileID: 0}
   m_TrackedDevicePositionAction: {fileID: 0}
   m_TrackedDeviceOrientationAction: {fileID: 0}
-  m_DeselectOnBackgroundClick: 1
+  m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
