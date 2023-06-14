@@ -193,7 +193,7 @@ MonoBehaviour:
   Data: {fileID: 11400000, guid: a17fedb4b1119ee07b25ea01cf1dcde0, type: 2}
   _collider: {fileID: 0}
   _groundCheckPoint: {fileID: 3530823505318929389}
-  _groundCheckSize: {x: 0.9, y: 0.04}
+  _groundCheckSize: {x: 0.98, y: 0.04}
   _frontWallCheckPoint: {fileID: 4068604916325126527}
   _pickUpLocation: {fileID: 7744334544013595154}
   _rayCastFrom: {fileID: 6453066987144545799}
