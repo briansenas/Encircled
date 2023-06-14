@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.SceneManagement;
@@ -79,7 +80,7 @@ public class PlayerSetupMenuController : MonoBehaviour
       menuButton.interactable = true; 
       readyPanel.SetActive(false); 
       readyButton.interactable = false; 
-      menuButton.Select();  
+      this.GetComponentInChildren<EventSystem>().SetSelectedGameObject(menuButton.gameObject); 
     }
     else if (menuPanel.activeSelf == true 
         && PlayerConfigurationManager.Instance.isEveryoneNotReady()) 
