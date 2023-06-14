@@ -25,12 +25,6 @@ public class SettingsMenu : MonoBehaviour
         }     
     }
 
-    void Update()
-    {
-        mainMixer.SetFloat("volume", defaultVolume);
-        PlayerPrefs.SetFloat("volume", defaultVolume);
-    }
-
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen; 
@@ -38,6 +32,7 @@ public class SettingsMenu : MonoBehaviour
 
     public void SetVolume(float volume)
     {
-        defaultVolume = volume;
+        mainMixer.SetFloat("volume", volume);
+        PlayerPrefs.SetFloat("volume", volume);
     }
 }
